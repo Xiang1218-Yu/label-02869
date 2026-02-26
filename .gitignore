@@ -1,0 +1,24 @@
+# 通用
+.DS_Store
+*.log
+.env
+.env.local
+*.local
+
+# 后端 backend
+backend/node_modules
+backend/npm-debug.log*
+backend/.env
+
+# 前端 frontend-user
+frontend-user/node_modules
+frontend-user/dist
+# frontend-user/.env
+# frontend-user/.env.local
+frontend-user/npm-debug.log*
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
