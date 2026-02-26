@@ -73,3 +73,99 @@ docker-compose up --build -d
 
 这是一个全栈项目，后端语言使用最快最简单的即可：  
 我想写一个水果店的 vue.js 开发，要求有首页，商品详情页面，购物车页面，登录页面（要能登录），要简约大方，还要注释实现使用的相对应的方法。
+
+
+## 项目结构
+
+### 后端 (backend/)
+```
+backend/
+├── scripts/
+│   ├── reseed-products.js  # 重新生成商品数据
+│   └── seed.js             # 创建演示用户
+├── src/
+│   ├── config/
+│   ├── controllers/
+│   │   ├── AuthController.js     # 认证相关
+│   │   ├── CartController.js     # 购物车相关
+│   │   └── ProductController.js  # 商品相关
+│   ├── middleware/
+│   │   ├── auth.js          # JWT认证
+│   │   ├── errorHandler.js  # 错误处理
+│   │   └── requestLog.js    # 请求日志
+│   ├── models/
+│   │   ├── CartModel.js     # 购物车模型
+│   │   ├── ProductModel.js  # 商品模型
+│   │   └── UserModel.js     # 用户模型
+│   ├── routes/
+│   ├── services/
+│   │   ├── AuthService.js     # 认证服务
+│   │   ├── CartService.js     # 购物车服务
+│   │   └── ProductService.js  # 商品服务
+│   ├── app.js          # 应用配置
+│   ├── db.js           # 数据库连接
+│   ├── index.js        # 入口文件
+│   └── initSeed.js     # 初始化种子数据
+├── .env.example  # 环境变量示例
+├── Dockerfile    # Docker配置
+├── package.json  # 依赖管理
+└── schema.sql    # 数据库建表脚本
+```
+
+### 前端 (frontend-user/)
+```
+frontend-user/
+├── public/           # 静态资源
+├── src/
+│   ├── api/
+│   │   ├── auth.js     # 认证相关API
+│   │   ├── cart.js     # 购物车相关API
+│   │   ├── product.js  # 商品相关API
+│   │   └── request.js  # 请求封装
+│   ├── components/
+│   │   └── ProductCard.vue  # 商品卡片组件
+│   ├── images/        # 图片资源
+│   ├── router/         # 路由配置
+│   ├── stores/
+│   │   ├── cart.js  # 购物车状态
+│   │   └── user.js  # 用户状态
+│   ├── styles/
+│   │   └── global.scss  # 全局样式
+│   ├── utils/
+│   │   └── crypto.js  # 加密工具
+│   ├── views/
+│   │   ├── CartView.vue          # 购物车页面
+│   │   ├── HomeView.vue          # 首页
+│   │   ├── LoginView.vue         # 登录页面
+│   │   └── ProductDetailView.vue  # 商品详情页面
+│   ├── App.vue        # 根组件
+│   └── main.js        # 入口文件
+├── Dockerfile       # Docker配置
+├── index.html       # HTML模板
+├── nginx.conf       # Nginx配置
+├── package.json     # 依赖管理
+└── vite.config.js   # Vite配置
+```
+
+## 功能介绍
+
+### 前端功能
+1. **首页**：展示商品列表，包含商品图片、名称、价格等信息
+2. **商品详情页面**：展示商品详细信息，支持添加到购物车
+3. **购物车页面**：查看已添加的商品，支持修改数量、删除商品、结算
+4. **登录/注册页面**：用户登录、注册功能，支持表单验证
+5. **用户状态管理**：使用Pinia管理用户登录状态
+6. **购物车状态管理**：使用Pinia管理购物车商品
+
+### 后端功能
+1. **认证系统**：基于JWT的用户认证，支持登录、注册
+2. **商品管理**：提供商品列表、商品详情API
+3. **购物车管理**：提供添加、修改、删除购物车商品API
+4. **数据库操作**：使用MySQL存储数据，包含用户、商品、购物车表
+5. **错误处理**：统一的错误处理机制
+6. **请求日志**：记录API请求日志
+
+### 技术栈
+- **前端**：Vue 3 + Vite + Element Plus + Pinia + SCSS
+- **后端**：Node.js + Express + MySQL + JWT
+- **部署**：Docker + Docker Compose
