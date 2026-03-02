@@ -7,7 +7,10 @@
       <router-link :to="`/product/${product.id}`" class="name">{{ product.name }}</router-link>
       <p class="desc">{{ (product.description || '').slice(0, 30) }}{{ (product.description || '').length > 30 ? '…' : '' }}</p>
       <div class="bottom">
-        <span class="price">¥ {{ Number(product.price || 0).toFixed(2) }}</span>
+        <div class="price-info">
+          <span class="price">¥ {{ Number(product.price || 0).toFixed(2) }}</span>
+          <span class="unit">/ {{ product.unit || '份' }}</span>
+        </div>
         <el-button type="primary" size="small" :loading="adding" @click.prevent="emit('add-cart', product.id)">
           加购
         </el-button>
@@ -67,7 +70,13 @@ const adding = ref(false);
       display: flex;
       align-items: center;
       justify-content: space-between;
+      .price-info {
+        display: flex;
+        align-items: baseline;
+        gap: 4px;
+      }
       .price { font-size: 16px; font-weight: 600; color: var(--primary); }
+      .unit { font-size: 12px; color: var(--text-secondary); }
     }
   }
 }

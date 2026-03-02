@@ -42,6 +42,31 @@ CREATE TABLE IF NOT EXISTS `cart_item` (
   CONSTRAINT `fk_cart_product` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='购物车项';
 
+-- 订单表
+CREATE TABLE IF NOT EXISTS `order` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_id` BIGINT UNSIGNED NOT NULL COMMENT '用户ID',
+  `total_amount` DECIMAL(10,2) NOT NULL DEFAULT 0 COMMENT '订单总金额',
+  `status` VARCHAR(32) NOT NULL DEFAULT 'pending' COMMENT '订单状态：pending-待支付, paid-已支付, cancelled-已取消',
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_user_id` (`user_id`),
+  CONSTRAINT `fk_order_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='订单表';
+
+-- 订单项表
+CREATE TABLE IF NOT EXISTS `order_item` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `order_id` BIGINT UNSIGNED NOT NULL COMMENT '订单ID',
+  `product_id` BIGINT UNSIGNED NOT NULL COMMENT '商品ID',
+  `quantity` INT UNSIGNED NOT NULL DEFAULT 1 COMMENT '数量',
+  `price` DECIMAL(10,2) NOT NULL DEFAULT 0 COMMENT '下单时单价',
+  PRIMARY KEY (`id`),
+  KEY `idx_order_id` (`order_id`),
+  CONSTRAINT `fk_order_item_order` FOREIGN KEY (`order_id`) REFERENCES `order` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_order_item_product` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='订单项表';
+
 -- 初始数据：测试用户 (密码 123456，hash 由 backend 的 scripts/seed.js 写入)
 -- 初始商品（长描述便于详情页展示）
 INSERT INTO `product` (`name`, `cover_url`, `description`, `price`, `stock`, `unit`) VALUES

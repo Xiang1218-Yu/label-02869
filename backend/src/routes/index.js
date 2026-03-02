@@ -5,6 +5,7 @@ const express = require('express');
 const AuthController = require('../controllers/AuthController');
 const ProductController = require('../controllers/ProductController');
 const CartController = require('../controllers/CartController');
+const OrderController = require('../controllers/OrderController');
 const auth = require('../middleware/auth');
 
 const router = express.Router();
@@ -21,6 +22,12 @@ router.get('/products/:id', ProductController.getById);
 // 购物车（需登录）
 router.get('/cart', auth, CartController.list);
 router.post('/cart', auth, CartController.add);
+router.put('/cart/:productId', auth, CartController.update);
 router.delete('/cart/:productId', auth, CartController.remove);
+
+// 订单（需登录）
+router.post('/orders', auth, OrderController.create);
+router.get('/orders', auth, OrderController.list);
+router.get('/orders/:id', auth, OrderController.getById);
 
 module.exports = router;

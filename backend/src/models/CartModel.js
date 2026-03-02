@@ -81,4 +81,19 @@ async function remove(userId, productId) {
   return result.affectedRows > 0;
 }
 
-module.exports = { listByUserId, upsert, remove };
+/**
+ * 更新购物车项数量（直接设置为指定数量）
+ * @param {number} userId
+ * @param {number} productId
+ * @param {number} quantity - 新的数量
+ * @returns {Promise<boolean>} 是否更新了记录
+ */
+async function updateQuantity(userId, productId, quantity) {
+  const [result] = await db.execute(
+    'UPDATE cart_item SET quantity = ?, updated_at = NOW() WHERE user_id = ? AND product_id = ?',
+    [quantity, userId, productId]
+  );
+  return result.affectedRows > 0;
+}
+
+module.exports = { listByUserId, upsert, remove, updateQuantity };

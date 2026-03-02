@@ -1,5 +1,5 @@
 /**
- * 购物车 Controller：列表、添加、删除
+ * 购物车 Controller：列表、添加、删除、更新数量
  * 所有接口需要登录（由 auth 中间件注入 req.userId）
  */
 const CartService = require('../services/CartService');
@@ -42,6 +42,31 @@ async function add(req, res, next) {
 }
 
 /**
+ * PUT /api/cart/:productId
+ * 入参：{ quantity }
+ */
+async function update(req, res, next) {
+  try {
+    const productId = parseInt(req.params.productId, 10);
+    const quantity = parseInt(req.body?.quantity, 10);
+    if (Number.isNaN(productId) || productId < 1) {
+      return res.status(400).json({ code: 400, message: '商品ID无效' });
+    }
+    if (Number.isNaN(quantity) || quantity < 1) {
+      return res.status(400).json({ code: 400, message: '数量至少为 1' });
+    }
+    await CartService.update(req.userId, productId, quantity);
+    const result = await CartService.list(req.userId, { page: 1, pageSize: 9999 });
+    res.json({ code: 0, data: result });
+  } catch (e) {
+    if (e.message === '购物车中无该商品') {
+      return res.status(404).json({ code: 404, message: e.message });
+    }
+    next(e);
+  }
+}
+
+/**
  * DELETE /api/cart/:productId
  */
 async function remove(req, res, next) {
@@ -60,4 +85,4 @@ async function remove(req, res, next) {
   }
 }
 
-module.exports = { list, add, remove };
+module.exports = { list, add, update, remove };

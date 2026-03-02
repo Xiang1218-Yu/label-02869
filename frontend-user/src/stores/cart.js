@@ -3,7 +3,7 @@
  */
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
-import { getCartList, addCart, removeCartItem } from '@/api/cart';
+import { getCartList, addCart, updateCartItem, removeCartItem } from '@/api/cart';
 
 export const useCartStore = defineStore('cart', () => {
   const items = ref([]);
@@ -30,11 +30,20 @@ export const useCartStore = defineStore('cart', () => {
     return data;
   }
 
+  /** 更新购物车商品数量 */
+  async function update(productId, quantity) {
+    const data = await updateCartItem(productId, { quantity });
+    items.value = data.list || [];
+    total.value = data.total ?? 0;
+    totalAmount.value = Number(data.totalAmount ?? 0);
+    return data;
+  }
+
   /** 删除购物车项（删除后需由调用方 fetchCart 刷新列表与 total） */
   async function remove(productId) {
     await removeCartItem(productId);
     items.value = items.value.filter((i) => i.product_id !== productId);
   }
 
-  return { items, total, totalAmount, totalCount, fetchCart, add, remove };
+  return { items, total, totalAmount, totalCount, fetchCart, add, update, remove };
 });

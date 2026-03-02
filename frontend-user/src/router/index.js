@@ -1,5 +1,5 @@
 /**
- * Vue Router：首页、商品详情、购物车、登录
+ * Vue Router：首页、商品详情、购物车、登录、结算、订单
  * 无路由守卫，未登录访问购物车时由 API 401 后跳转登录
  */
 import { createRouter, createWebHashHistory } from 'vue-router';
@@ -13,6 +13,14 @@ const routes = [
     meta: { title: '商品详情' },
   },
   { path: '/cart', name: 'Cart', component: () => import('@/views/CartView.vue'), meta: { title: '购物车' } },
+  { path: '/checkout', name: 'Checkout', component: () => import('@/views/CheckoutView.vue'), meta: { title: '确认订单' } },
+  { path: '/orders', name: 'Orders', component: () => import('@/views/OrderListView.vue'), meta: { title: '我的订单' } },
+  {
+    path: '/orders/:id',
+    name: 'OrderDetail',
+    component: () => import('@/views/OrderDetailView.vue'),
+    meta: { title: '订单详情' },
+  },
   { path: '/login', name: 'Login', component: () => import('@/views/LoginView.vue'), meta: { title: '登录' } },
 ];
 

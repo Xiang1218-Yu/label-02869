@@ -34,7 +34,15 @@
             ¥ {{ Number(item.price || 0).toFixed(2) }} / {{ item.unit }}
           </div>
         </div>
-        <div class="item-qty">x {{ item.quantity }}</div>
+        <div class="item-quantity">
+          <el-input-number
+            v-model="item.quantity"
+            :min="1"
+            :max="item.stock"
+            size="small"
+            @change="handleQuantityChange(item.product_id, item.quantity)"
+          />
+        </div>
         <div class="item-total">
           ¥ {{ (Number(item.price || 0) * (item.quantity || 0)).toFixed(2) }}
         </div>
@@ -52,7 +60,7 @@
         <span class="total-amount"
           >¥ {{ Number(cartStore.totalAmount).toFixed(2) }}</span
         >
-        <!-- <el-button type="primary" disabled>暂不支持下单，仅演示购物车</el-button> -->
+        <el-button type="primary" size="large" @click="handleCheckout">去结算</el-button>
       </div>
       <el-pagination
         v-if="cartStore.total > 0"
@@ -71,9 +79,10 @@
 
 <script setup>
 /**
- * 购物车页：从 useCartStore 拉取列表（需登录），展示数量与总价，支持删除
+ * 购物车页：从 useCartStore 拉取列表（需登录），展示数量与总价，支持删除和调整数量
  */
 import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { useCartStore } from "@/stores/cart";
 import { useUserStore } from "@/stores/user";
@@ -84,6 +93,7 @@ const cartPage = ref(1);
 const cartPageSize = ref(10);
 const cartStore = useCartStore();
 const userStore = useUserStore();
+const router = useRouter();
 
 const placeholderImg =
   "data:image/svg+xml," +
@@ -131,6 +141,23 @@ async function handleRemove(productId) {
       }
     })
     .catch(() => {});
+}
+
+async function handleQuantityChange(productId, quantity) {
+  try {
+    await cartStore.update(productId, quantity);
+  } catch (e) {
+    // 错误已在 request 拦截器提示
+    await cartStore.fetchCart(cartPage.value, cartPageSize.value);
+  }
+}
+
+function handleCheckout() {
+  if (cartStore.items.length === 0) {
+    ElMessage.warning("购物车是空的");
+    return;
+  }
+  router.push("/checkout");
 }
 
 onMounted(() => loadCart());
@@ -195,6 +222,9 @@ onMounted(() => loadCart());
     }
     .item-qty {
       color: var(--text-secondary);
+    }
+    .item-quantity {
+      min-width: 120px;
     }
     .item-total {
       font-weight: 600;
