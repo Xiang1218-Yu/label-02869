@@ -1,5 +1,5 @@
 /**
- * 订单 Controller：创建订单、查询订单列表和详情
+ * 订单 Controller：创建订单、查询订单列表和详情、支付订单
  * 所有接口需要登录（由 auth 中间件注入 req.userId）
  */
 const OrderService = require('../services/OrderService');
@@ -55,4 +55,27 @@ async function getById(req, res, next) {
   }
 }
 
-module.exports = { create, list, getById };
+/**
+ * POST /api/orders/:id/pay
+ * 支付订单（模拟）
+ */
+async function pay(req, res, next) {
+  try {
+    const orderId = parseInt(req.params.id, 10);
+    if (Number.isNaN(orderId)) {
+      return res.status(400).json({ code: 400, message: '订单ID无效' });
+    }
+    const result = await OrderService.pay(orderId, req.userId);
+    res.json({ code: 0, data: result });
+  } catch (e) {
+    if (e.message === '订单不存在') {
+      return res.status(404).json({ code: 404, message: e.message });
+    }
+    if (e.message === '订单已支付' || e.message.includes('无法支付')) {
+      return res.status(400).json({ code: 400, message: e.message });
+    }
+    next(e);
+  }
+}
+
+module.exports = { create, list, getById, pay };

@@ -102,4 +102,18 @@ async function findById(orderId, userId) {
   return order;
 }
 
-module.exports = { create, listByUserId, findById };
+/**
+ * 更新订单状态
+ * @param {number} orderId
+ * @param {string} status - 新状态
+ * @returns {Promise<boolean>}
+ */
+async function updateStatus(orderId, status) {
+  const [result] = await db.execute(
+    'UPDATE `order` SET status = ? WHERE id = ?',
+    [status, orderId]
+  );
+  return result.affectedRows > 0;
+}
+
+module.exports = { create, listByUserId, findById, updateStatus };

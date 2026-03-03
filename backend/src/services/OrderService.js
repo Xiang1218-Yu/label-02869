@@ -1,5 +1,5 @@
 /**
- * 订单 Service：创建订单、查询订单列表和详情
+ * 订单 Service：创建订单、查询订单列表和详情、支付订单
  */
 const OrderModel = require('../models/OrderModel');
 const CartModel = require('../models/CartModel');
@@ -69,4 +69,28 @@ async function getById(orderId, userId) {
   return OrderModel.findById(orderId, userId);
 }
 
-module.exports = { createFromCart, list, getById };
+/**
+ * 支付订单（模拟）
+ * @param {number} orderId
+ * @param {number} userId
+ * @returns {Promise<object>}
+ */
+async function pay(orderId, userId) {
+  const order = await OrderModel.findById(orderId, userId);
+  if (!order) {
+    throw new Error('订单不存在');
+  }
+  if (order.status === 'paid') {
+    throw new Error('订单已支付');
+  }
+  if (order.status === 'cancelled') {
+    throw new Error('订单已取消，无法支付');
+  }
+
+  // 模拟支付处理（实际应该调用支付网关）
+  await OrderModel.updateStatus(orderId, 'paid');
+  
+  return { success: true, message: '支付成功' };
+}
+
+module.exports = { createFromCart, list, getById, pay };

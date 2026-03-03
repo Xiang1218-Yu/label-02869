@@ -29,5 +29,6 @@ router.delete('/cart/:productId', auth, CartController.remove);
 router.post('/orders', auth, OrderController.create);
 router.get('/orders', auth, OrderController.list);
 router.get('/orders/:id', auth, OrderController.getById);
+router.post('/orders/:id/pay', auth, OrderController.pay);
 
 module.exports = router;

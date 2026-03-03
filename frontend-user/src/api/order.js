@@ -1,5 +1,5 @@
 /**
- * 订单 API：创建订单、查询订单列表和详情
+ * 订单 API：创建订单、查询订单列表和详情、支付订单
  * 对应后端 OrderController，需登录
  */
 import request from './request';
@@ -17,4 +17,9 @@ export function getOrderList(params) {
 /** GET /api/orders/:id → 订单详情 */
 export function getOrderDetail(id) {
   return request.get(`/api/orders/${id}`);
+}
+
+/** POST /api/orders/:id/pay → 支付订单（模拟） */
+export function payOrder(id) {
+  return request.post(`/api/orders/${id}/pay`);
 }

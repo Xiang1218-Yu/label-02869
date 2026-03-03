@@ -31,9 +31,18 @@
             <span class="label">订单金额：</span>
             <span class="value">¥ {{ Number(order.total_amount).toFixed(2) }}</span>
           </div>
-          <el-button type="primary" link @click="$router.push(`/orders/${order.id}`)">
-            查看详情
-          </el-button>
+          <div class="order-actions">
+            <el-button type="primary" link @click="$router.push(`/orders/${order.id}`)">
+              查看详情
+            </el-button>
+            <el-button 
+              v-if="order.status === 'pending'" 
+              type="primary" 
+              @click="handlePayOrder(order.id)"
+            >
+              立即支付
+            </el-button>
+          </div>
         </div>
       </div>
 
@@ -54,10 +63,12 @@
 
 <script setup>
 /**
- * 订单列表页：展示用户的所有订单
+ * 订单列表页：展示用户的所有订单，支持支付
  */
 import { ref, onMounted } from "vue";
-import { getOrderList } from "@/api/order";
+import { useRouter } from "vue-router";
+import { ElMessage } from "element-plus";
+import { getOrderList, payOrder } from "@/api/order";
 import { useUserStore } from "@/stores/user";
 
 const loading = ref(true);
@@ -66,6 +77,7 @@ const page = ref(1);
 const pageSize = ref(10);
 const total = ref(0);
 const userStore = useUserStore();
+const router = useRouter();
 
 function getStatusText(status) {
   const map = {
@@ -124,6 +136,10 @@ function onSizeChange(size) {
   loadOrders();
 }
 
+async function handlePayOrder(orderId) {
+  router.push(`/orders/${orderId}`);
+}
+
 onMounted(() => loadOrders());
 </script>
 
@@ -180,6 +196,12 @@ onMounted(() => loadOrders());
   .order-body {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+  }
+
+  .order-actions {
+    display: flex;
+    gap: 8px;
     align-items: center;
   }
 

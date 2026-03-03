@@ -52,7 +52,15 @@
 
       <div class="actions">
         <el-button @click="$router.push('/orders')">返回订单列表</el-button>
-        <el-button type="primary" @click="$router.push('/')">继续购物</el-button>
+        <el-button 
+          v-if="order.status === 'pending'" 
+          type="primary" 
+          :loading="paying"
+          @click="handlePay"
+        >
+          立即支付
+        </el-button>
+        <el-button v-else type="primary" @click="$router.push('/')">继续购物</el-button>
       </div>
     </div>
   </div>
@@ -60,14 +68,17 @@
 
 <script setup>
 /**
- * 订单详情页：展示订单信息和商品清单
+ * 订单详情页：展示订单信息和商品清单，支持支付
  */
 import { ref, onMounted } from "vue";
-import { useRoute } from "vue-router";
-import { getOrderDetail } from "@/api/order";
+import { useRoute, useRouter } from "vue-router";
+import { ElMessage, ElMessageBox } from "element-plus";
+import { getOrderDetail, payOrder } from "@/api/order";
 
 const route = useRoute();
+const router = useRouter();
 const loading = ref(true);
+const paying = ref(false);
 const order = ref(null);
 
 const placeholderImg =
@@ -120,6 +131,34 @@ async function loadOrder() {
   } finally {
     loading.value = false;
   }
+}
+
+async function handlePay() {
+  ElMessageBox.confirm(
+    `确认支付 ¥${Number(order.value.total_amount).toFixed(2)} 吗？`,
+    "模拟支付",
+    {
+      confirmButtonText: "确认支付",
+      cancelButtonText: "取消",
+      type: "warning",
+    }
+  )
+    .then(async () => {
+      paying.value = true;
+      try {
+        // 模拟支付延迟
+        await new Promise((resolve) => setTimeout(resolve, 1500));
+        await payOrder(order.value.id);
+        ElMessage.success("支付成功！");
+        // 重新加载订单详情
+        await loadOrder();
+      } catch (e) {
+        // 错误已在 request 拦截器提示
+      } finally {
+        paying.value = false;
+      }
+    })
+    .catch(() => {});
 }
 
 onMounted(() => loadOrder());
