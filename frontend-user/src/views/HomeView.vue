@@ -1,8 +1,10 @@
 <template>
   <div class="home-view">
-    <h1 class="page-title">
-      新鲜水果
-
+    <div class="page-header">
+      <div class="header-left">
+        <h1 class="page-title">新鲜水果</h1>
+        <p class="page-subtitle">每日直供 · 新鲜到家</p>
+      </div>
       <div class="search-bar">
         <el-input
           v-model="keyword"
@@ -17,7 +19,13 @@
           </template>
         </el-input>
       </div>
-    </h1>
+    </div>
+
+    <div class="trust-strip">
+      <span class="trust-item">✓ 产地直采</span>
+      <span class="trust-item">✓ 品质保证</span>
+      <span class="trust-item">✓ 售后无忧</span>
+    </div>
 
     <el-skeleton v-if="loading" :rows="6" animated />
     <el-row v-else :gutter="24" class="product-grid">
@@ -123,29 +131,50 @@ onMounted(() => loadList());
 
 <style lang="scss" scoped>
 .home-view {
-  .page-title {
+  .page-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin: 0 0 var(--spacing-md);
-    font-size: 20px;
-    font-weight: 600;
-    color: var(--text);
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
   }
-  .search-bar {
-    display: inline-block;
-    .search-input {
-      width: 30vw;
+  .header-left {
+    .page-title {
+      margin: 0 0 4px;
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+    .page-subtitle {
+      margin: 0;
+      font-size: 14px;
+      color: var(--text-secondary);
     }
   }
+  .search-bar .search-input {
+    width: min(320px, 100%);
+  }
+  .trust-strip {
+    display: flex;
+    gap: var(--spacing-md);
+    padding: var(--spacing-sm) 0;
+    margin-bottom: var(--spacing-md);
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+  .trust-item { white-space: nowrap; }
   .product-grid {
     margin-bottom: var(--spacing-md);
   }
   .empty-tip {
     text-align: center;
-    padding: var(--spacing-md);
+    padding: var(--spacing-lg);
     color: var(--text-secondary);
   }
+  .empty-img { max-width: 200px; opacity: 0.8; }
   .pagination {
     margin-top: var(--spacing-md);
     justify-content: center;

@@ -130,7 +130,8 @@ async function handleLogin() {
     const passwordHash = await sha256Hex(loginForm.password);
     await userStore.login({ username: loginForm.username, password: passwordHash });
     ElMessage.success("登录成功");
-    router.push("/");
+    const redirect = router.currentRoute.value.query.redirect;
+    router.push(redirect && redirect !== '/login' ? redirect : '/');
   } catch (e) {
     // 错误已在 request 中提示
   } finally {
@@ -150,7 +151,8 @@ async function handleRegister() {
       nickname: registerForm.nickname,
     });
     ElMessage.success("注册成功");
-    router.push("/");
+    const redirect = router.currentRoute.value.query.redirect;
+    router.push(redirect && redirect !== '/login' ? redirect : '/');
   } catch (e) {
     // 错误已在 request 中提示
   } finally {
@@ -167,32 +169,40 @@ async function handleRegister() {
   min-height: 60vh;
   .login-card {
     width: 100%;
-    max-width: 400px;
-    padding: var(--spacing-md);
+    max-width: 420px;
+    padding: var(--spacing-lg);
     background: var(--card-bg);
     border-radius: var(--radius);
     box-shadow: var(--card-shadow);
+    border: 1px solid var(--border);
     .title {
-      margin: 0 0 var(--spacing-sm);
-      font-size: 20px;
-      font-weight: 600;
+      margin: 0 0 var(--spacing-md);
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
       text-align: center;
+      color: var(--text);
     }
     .tabs {
-      margin-bottom: var(--spacing-xs);
+      margin-bottom: var(--spacing-sm);
     }
     .submit-btn {
       width: 100%;
+      margin-top: var(--spacing-xs);
     }
     .footer {
       text-align: center;
-      margin-top: var(--spacing-sm);
+      margin-top: var(--spacing-md);
+      padding-top: var(--spacing-sm);
+      border-top: 1px solid var(--border);
     }
     .footer a {
       color: var(--primary);
       text-decoration: none;
       font-size: 14px;
+      font-weight: 500;
     }
+    .footer a:hover { text-decoration: underline; }
   }
 }
 </style>

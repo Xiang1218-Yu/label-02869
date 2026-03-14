@@ -41,17 +41,22 @@ const adding = ref(false);
   box-shadow: var(--card-shadow);
   overflow: hidden;
   margin-bottom: var(--spacing-sm);
-  transition: box-shadow 0.2s;
-  &:hover { box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12); }
+  transition: box-shadow var(--transition), transform var(--transition);
+  &:hover {
+    box-shadow: var(--card-shadow-hover);
+    transform: translateY(-2px);
+  }
   .cover-wrap {
     display: block;
-    height: 160px;
-    background: #f0f0f0;
+    aspect-ratio: 1;
+    overflow: hidden;
   }
   .cover {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    display: block;
+    vertical-align: top;
   }
   .body {
     padding: var(--spacing-sm);
@@ -60,22 +65,25 @@ const adding = ref(false);
       font-weight: 600;
       color: var(--text);
       text-decoration: none;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+      transition: color var(--transition);
     }
-    .desc { font-size: 12px; color: var(--text-secondary); margin: 0 0 var(--spacing-xs); line-height: 1.4; }
+    .name:hover { color: var(--primary); }
+    .desc { font-size: 12px; color: var(--text-secondary); margin: 0 0 var(--spacing-xs); line-height: 1.45; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
     .bottom {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      margin-top: var(--spacing-xs);
       .price-info {
         display: flex;
         align-items: baseline;
         gap: 4px;
       }
-      .price { font-size: 16px; font-weight: 600; color: var(--primary); }
+      .price { font-size: 17px; font-weight: 600; color: var(--primary); }
       .unit { font-size: 12px; color: var(--text-secondary); }
     }
   }

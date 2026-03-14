@@ -61,49 +61,56 @@ function handleLogout() {
   background: var(--page-bg);
 }
 .app-header {
-  height: 56px;
-  padding: 0 24px;
+  height: 60px;
+  padding: 0 var(--spacing-md);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #fff;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  background: var(--card-bg);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
   position: sticky;
   top: 0;
   z-index: 100;
 }
 .logo {
-  font-size: 20px;
-  font-weight: 600;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
   color: var(--primary);
   text-decoration: none;
+  transition: opacity var(--transition);
 }
+.logo:hover { opacity: 0.88; }
 .nav {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 28px;
   a {
     color: var(--text);
     text-decoration: none;
     font-size: 14px;
-    &.router-link-active { color: var(--primary); font-weight: 500; }
+    font-weight: 500;
+    transition: color var(--transition);
+    &.router-link-active { color: var(--primary); font-weight: 600; }
   }
+  a:hover:not(.router-link-active) { color: var(--primary-light); }
   .cart-link {
     position: relative;
     display: inline-flex;
     align-items: center;
-    gap: 4px;
+    gap: 6px;
   }
   .cart-badge {
     :deep(.el-badge__content) {
       transform: translateY(-50%) translateX(0);
     }
   }
-  .user-name { font-size: 14px; color: var(--text-secondary); margin-right: 8px; }
+  .user-name { font-size: 14px; color: var(--text-secondary); margin-right: 4px; }
 }
 .app-main {
   flex: 1;
-  padding: 24px;
+  padding: var(--spacing-md);
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;

@@ -118,20 +118,24 @@ onMounted(() => loadCart());
 .checkout-view {
   .page-title {
     margin: 0 0 var(--spacing-md);
-    font-size: 20px;
-    font-weight: 600;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text);
   }
   .empty {
-    padding: var(--spacing-md);
+    padding: var(--spacing-lg);
     background: var(--card-bg);
     border-radius: var(--radius);
     box-shadow: var(--card-shadow);
+    border: 1px solid var(--border);
   }
   .checkout-card {
     background: var(--card-bg);
     border-radius: var(--radius);
     box-shadow: var(--card-shadow);
     padding: var(--spacing-md);
+    border: 1px solid var(--border);
   }
 
   .section {

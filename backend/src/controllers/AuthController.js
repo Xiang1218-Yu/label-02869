@@ -15,7 +15,7 @@ async function login(req, res, next) {
   try {
     const { username, password } = req.body || {};
     if (!username || !password) {
-      return
+      return res.status(400).json({ code: 400, message: '缺少必填参数：用户名和密码' });
     }
     const user = await AuthService.login(username, password);
     if (!user) {
@@ -36,7 +36,7 @@ async function register(req, res, next) {
   try {
     const { username, password, nickname } = req.body || {};
     if (!username || !password) {
-      return
+      return res.status(400).json({ code: 400, message: '缺少必填参数：用户名和密码' });
     }
     const user = await AuthService.register(username, password, nickname);
     const token = jwt.sign({ userId: user.id }, config.jwtSecret, { expiresIn: config.jwtExpiresIn });

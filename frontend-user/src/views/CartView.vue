@@ -171,28 +171,32 @@ onMounted(() => loadCart());
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 8px;
-    margin: 0 0 var(--spacing-md);
+    margin-bottom: var(--spacing-md);
   }
   .page-title {
     margin: 0;
-    font-size: 20px;
-    font-weight: 600;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text);
   }
   .page-extra {
     font-size: 14px;
     color: var(--text-secondary);
   }
   .empty {
-    padding: var(--spacing-md);
+    padding: var(--spacing-lg);
     background: var(--card-bg);
     border-radius: var(--radius);
     box-shadow: var(--card-shadow);
+    border: 1px solid var(--border);
   }
   .cart-card {
     background: var(--card-bg);
     border-radius: var(--radius);
     box-shadow: var(--card-shadow);
-    padding: var(--spacing-sm);
+    padding: var(--spacing-md);
+    border: 1px solid var(--border);
   }
 
   .cart-item {
