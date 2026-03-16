@@ -75,3 +75,10 @@ INSERT INTO `product` (`name`, `cover_url`, `description`, `price`, `stock`, `un
 ('海南香蕉', 'https://img2.baidu.com/it/u=3733023367,2730633383&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=749g', '海南直供香蕉，自然熟成，软糯香甜，富含钾元素。可直接食用或搭配燕麦、酸奶，是早餐与加餐的理想选择。', 6.50, 120, '斤'),
 ('新疆葡萄', 'https://inews.gtimg.com/om_bt/O-Ul5CKLwIKZcvqvKC04iCq0V5IhMwvI0SLVlAM2Ad8OwAA/1000', '新疆无籽葡萄，颗颗饱满、甜度高、皮薄多汁。适合鲜食或制成果汁，冷藏后风味更佳。', 18.00, 60, '斤'),
 ('泰国榴莲', 'https://img0.baidu.com/it/u=66075833,3460728373&fm=253&fmt=auto&app=138&f=JPEG?w=333&h=500', '泰国金枕榴莲，果肉饱满、香味浓郁、口感绵密。开壳即食或冷冻后口感似冰淇淋，是榴莲爱好者的首选。', 88.00, 30, '个');
+
+-- 初始化测试用户 demo / 123456
+INSERT INTO `user` (`username`, `password_hash`, `nickname`)
+VALUES ('demo', 'YOUR_HASH_HERE', '演示用户')
+ON DUPLICATE KEY UPDATE
+  `password_hash` = VALUES(`password_hash`),
+  `nickname` = VALUES(`nickname`);
