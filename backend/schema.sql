@@ -67,7 +67,6 @@ CREATE TABLE IF NOT EXISTS `order_item` (
   CONSTRAINT `fk_order_item_product` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='订单项表';
 
--- 初始数据：测试用户 (密码 123456，hash 由 backend 的 scripts/seed.js 写入)
 -- 初始商品（长描述便于详情页展示）
 INSERT INTO `product` (`name`, `cover_url`, `description`, `price`, `stock`, `unit`) VALUES
 ('新鲜苹果', 'https://copyright.bdstatic.com/vcg/creative/9904f90bae365cbabf0e3422ae79d141c1d437ab.jpg@wm_1,k_cGljX2JqaHdhdGVyLmpwZw==', '产自陕西、山东等优质产区，果皮红润或青脆，果肉脆甜多汁，富含膳食纤维与维生素 C。适合直接鲜食或榨汁，冷藏后口感更佳。', 12.80, 100, '斤'),
@@ -78,7 +77,7 @@ INSERT INTO `product` (`name`, `cover_url`, `description`, `price`, `stock`, `un
 
 -- 初始化测试用户 demo / 123456
 INSERT INTO `user` (`username`, `password_hash`, `nickname`)
-VALUES ('demo', 'YOUR_HASH_HERE', '演示用户')
+VALUES ('demo', '$2b$10$zeEeHbM3Y.yi7N7dh2lN/OOwlPW/7p/itt4az7Cx9QblcVTui9gfm', '演示用户')
 ON DUPLICATE KEY UPDATE
   `password_hash` = VALUES(`password_hash`),
   `nickname` = VALUES(`nickname`);
