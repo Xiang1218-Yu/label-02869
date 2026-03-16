@@ -134,6 +134,7 @@ async function handleLogin() {
     router.push(redirect && redirect !== '/login' ? redirect : '/');
   } catch (e) {
     // 错误已在 request 中提示
+    console.log("登录失败:", e)
   } finally {
     loading.value = false;
   }
