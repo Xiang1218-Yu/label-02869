@@ -57,8 +57,8 @@ async function createFromCart(userId) {
  */
 async function list(userId, opts = {}) {
   return OrderModel.listByUserId(userId, {
-    page: opts.page,
-    pageSize: opts.pageSize,
+    page: opts.current || opts.page,
+    pageSize: opts.size || opts.pageSize,
   });
 }
 
