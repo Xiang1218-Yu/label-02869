@@ -52,11 +52,14 @@ async function createFromCart(userId) {
 /**
  * 查询用户订单列表
  * @param {number} userId
- * @param {object} opts - { page, pageSize }
+ * @param {object} opts - Controller 传入 { current, size }，此处转为 Model 的 page / pageSize
  * @returns {Promise<{ list: array, total: number }>}
  */
 async function list(userId, opts = {}) {
-  return OrderModel.listByUserId(userId, opts);
+  return OrderModel.listByUserId(userId, {
+    page: opts.page,
+    pageSize: opts.pageSize,
+  });
 }
 
 /**

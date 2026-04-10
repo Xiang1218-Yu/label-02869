@@ -54,7 +54,7 @@ async function create(userId, orderData) {
 async function listByUserId(userId, opts = {}) {
   const page = Math.max(1, parseInt(opts.page, 10) || 1);
   const pageSize = Math.min(100, Math.max(1, parseInt(opts.pageSize, 10) || 10));
-  const offset = (page - 1) * pageSize;
+  const offset = page * pageSize;
 
   const [[{ total }]] = await db.execute(
     'SELECT COUNT(*) AS total FROM `order` WHERE user_id = ?',
