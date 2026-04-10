@@ -49,8 +49,8 @@
       <el-pagination
         v-if="total > 0"
         class="pagination"
-        :current-page="page"
-        :page-size="pageSize"
+        v-model:current-page="page"
+        v-model:page-size="pageSize"
         :page-sizes="[5, 10, 20]"
         :total="total"
         layout="total, sizes, prev, pager, next"
