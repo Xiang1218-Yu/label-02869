@@ -26,9 +26,9 @@ async function create(req, res, next) {
  */
 async function list(req, res, next) {
   try {
-    const current = parseInt(req.query.current, 10) || 1;
-    const size = parseInt(req.query.size, 10) || 10;
-    const result = await OrderService.list(req.userId, { current, size });
+    const page = parseInt(req.query.page, 10) || parseInt(req.query.current, 10) || 1;
+    const pageSize = parseInt(req.query.pageSize, 10) || parseInt(req.query.size, 10) || 10;
+    const result = await OrderService.list(req.userId, { page, pageSize });
     res.json({ code: 0, data: result });
   } catch (e) {
     next(e);
