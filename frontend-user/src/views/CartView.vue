@@ -65,8 +65,8 @@
       <el-pagination
         v-if="cartStore.total > 0"
         class="pagination"
-        :current-page="cartPage"
-        :page-size="cartPageSize"
+        v-model:current-page="cartPage"
+        v-model:page-size="cartPageSize"
         :page-sizes="[5, 10, 20]"
         :total="cartStore.total"
         layout="total, sizes, prev, pager, next"
