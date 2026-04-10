@@ -9,9 +9,14 @@ export function createOrder() {
   return request.post('/api/orders');
 }
 
-/** GET /api/orders?page=1&pageSize=10 → { list, total } */
+/** GET /api/orders → { list, total } */
 export function getOrderList(params) {
-  return request.get('/api/orders', { params });
+  return request.get('/api/orders', {
+    params: {
+      page: params.page,
+      pageSize: params.pageSize,
+    },
+  });
 }
 
 /** GET /api/orders/:id → 订单详情 */
