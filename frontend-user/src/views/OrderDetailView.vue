@@ -60,7 +60,14 @@
         >
           立即支付
         </el-button>
-        <el-button v-else type="primary" @click="$router.push('/')">继续购物</el-button>
+        <el-button 
+          type="success" 
+          :loading="reordering"
+          @click="handleReorder"
+        >
+          再来一单
+        </el-button>
+        <el-button v-if="order.status !== 'pending'" type="primary" @click="$router.push('/')">继续购物</el-button>
       </div>
     </div>
   </div>
@@ -74,12 +81,15 @@ import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { getOrderDetail, payOrder } from "@/api/order";
+import { useCartStore } from "@/stores/cart";
 
 const route = useRoute();
 const router = useRouter();
 const loading = ref(true);
 const paying = ref(false);
+const reordering = ref(false);
 const order = ref(null);
+const cartStore = useCartStore();
 
 const placeholderImg =
   "data:image/svg+xml," +
@@ -156,6 +166,43 @@ async function handlePay() {
         // 错误已在 request 拦截器提示
       } finally {
         paying.value = false;
+      }
+    })
+    .catch(() => {});
+}
+
+/**
+ * 再来一单功能：将当前订单的商品添加到购物车并跳转到结算页
+ */
+async function handleReorder() {
+  if (!order.value || !order.value.items || order.value.items.length === 0) {
+    ElMessage.warning("该订单没有商品");
+    return;
+  }
+
+  ElMessageBox.confirm(
+    "确定将该订单商品加入购物车并重新下单吗？",
+    "提示",
+    {
+      confirmButtonText: "确定",
+      cancelButtonText: "取消",
+      type: "warning",
+    }
+  )
+    .then(async () => {
+      reordering.value = true;
+      try {
+        // 逐个添加商品到购物车
+        for (const item of order.value.items) {
+          await cartStore.add(item.product_id, item.quantity);
+        }
+        ElMessage.success("商品已加入购物车");
+        // 跳转到结算页
+        router.push("/checkout");
+      } catch (e) {
+        // 错误已在 request 拦截器提示
+      } finally {
+        reordering.value = false;
       }
     })
     .catch(() => {});
